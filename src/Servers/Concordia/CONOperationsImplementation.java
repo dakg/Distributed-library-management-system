@@ -77,7 +77,7 @@ public class CONOperationsImplementation implements CONOperations {
     public int borrowItem(String userID, String itemID, String numberOfDays ,int waitWish) {
         if(Data.up.containsKey(userID))
         {
-            
+            System.out.println("not yet created");
         }
         return 0;
     }
