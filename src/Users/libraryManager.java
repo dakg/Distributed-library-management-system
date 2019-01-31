@@ -47,17 +47,17 @@ public class libraryManager {
             System.out.print("ID No :");
             BufferedReader buf = new BufferedReader(new InputStreamReader(System.in));
             String id = buf.readLine();
-            System.out.print("Password :");
-            String pass = buf.readLine();
+//            System.out.print("Password :");
+//            String pass = buf.readLine();
             String Token = tokenGenerator(id);
             //   System.out.println(tokenGenerator(id));
 
             if (Token.equals("CU") || Token.equals("CM")) {
-                concordia(id, pass);
+                concordia(id);
             } else if ((Token.equals("GU") || Token.equals("GM"))) {
-                mcgill(id, pass);
+                mcgill(id);
             } else if ((Token.equals("MU") || Token.equals("MM"))) {
-                montreal(id, pass);
+                montreal(id);
             }
         } catch (Exception e) {
             System.err.println("Client exception: " + e.toString());
@@ -67,11 +67,11 @@ public class libraryManager {
     static void testThread(){
         
     }
-    static void concordia(String id, String pass) {
+    static void concordia(String id) {
         try {
             Registry registry = LocateRegistry.getRegistry(1111);
             CONOperations stub = (CONOperations) registry.lookup("//localhost:1111/CONImp");
-            int authCode = stub.authuser(id, pass);
+            int authCode = stub.authuser(id);
             Scanner sc = new Scanner(System.in);
             switch (authCode) {
                 case 1: //for manager
@@ -89,7 +89,8 @@ public class libraryManager {
                                 System.out.print("Enter Book id :");
                                 String boodID = sc.next();
                                 System.out.print("Enter Book name :");
-                                String bookName = sc.next();
+                                sc.nextLine();
+                                String bookName = sc.nextLine();
                                 System.out.print("Enter quantity :");
                                 int quant = sc.nextInt();
                                 System.out.println("Adding item...");
@@ -104,8 +105,17 @@ public class libraryManager {
                             case 2: {
                                 System.out.print("Enter Book id :");
                                 String boodID = sc.next();
+                                System.out.println("1) Decrease Quantity");
+                                System.out.println("2) Remove completely");
+                                int quant=0;
+                                int tq = sc.nextInt();
+                                if(tq==1){
                                 System.out.print("Enter quantity :");
-                                int quant = sc.nextInt();
+                                quant = sc.nextInt();
+                                }
+                                else if(tq ==2){
+                                    quant =-1;
+                                }
                                 System.out.println("Removing item...");
                                 int replyFromRemove = stub.removeItem(id, boodID, quant);
                                 if (replyFromRemove == 3) {
@@ -153,11 +163,11 @@ public class libraryManager {
         }
     }
 
-    static void mcgill(String id, String pass) {
+    static void mcgill(String id) {
         try {
             Registry registry = LocateRegistry.getRegistry(2222);
             MCGOperations stub = (MCGOperations) registry.lookup("//localhost:2222/MCGImp");
-            int authCode = stub.authuser(id, pass);
+            int authCode = stub.authuser(id);
             Scanner sc = new Scanner(System.in);
             switch (authCode) {
                 case 1: //for manager
@@ -239,11 +249,11 @@ public class libraryManager {
         }
     }
 
-    static void montreal(String id, String pass) {
+    static void montreal(String id) {
         try {
             Registry registry = LocateRegistry.getRegistry(3333);
             MONOperations stub = (MONOperations) registry.lookup("//localhost:3333/MONImp");
-            int authCode = stub.authuser(id, pass);
+            int authCode = stub.authuser(id);
             Scanner sc = new Scanner(System.in);
             switch (authCode) {
                 case 1: //for manager

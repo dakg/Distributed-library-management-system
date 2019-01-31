@@ -20,6 +20,7 @@ public class CONOperationsImplementation implements CONOperations {
                     Data.bi.put(itemID, new BookDetails(itemName, quantity));
                    // System.out.println("added");
                 } else {
+                    bd.name=itemName;
                     bd.quantity = bd.quantity + quantity;
                     Data.bi.put(itemID, bd);
                     //System.out.println("updated");
@@ -42,12 +43,11 @@ public class CONOperationsImplementation implements CONOperations {
                 if (bd == null) {
                     return 3;                                                       //bookid not available
                 } else {
-                    int temp = bd.quantity - quantity;
-                    if (temp <= 0) {
+                    if(quantity == -1){
                         Data.bi.remove(itemID);
                         return 2;                                                   //return 2 if item completely deleted
                     } else {
-                        bd.quantity = bd.quantity - temp;
+                        bd.quantity = bd.quantity - quantity;
                         Data.bi.put(itemID, bd);
                         return 1;                                                   //return 1 item quantity decreased 
                     }
@@ -93,9 +93,10 @@ public class CONOperationsImplementation implements CONOperations {
     }
 
     @Override
-    public int authuser(String id, String passcode) {
+    public int authuser(String id) {
         String pass = Data.up.get(id);
         // System.out.println(pass + " " + passcode);
+        String passcode = "1111";
         if (pass == null) {
             return 0;                                   //return 0 for no userid found
         } else if (pass.equals(passcode)) {

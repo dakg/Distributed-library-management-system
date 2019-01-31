@@ -88,8 +88,9 @@ public class MCGOperationsImplementation implements MCGOperations {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public int authuser(String id, String passcode) {
+    public int authuser(String id) {
         String pass = Data.up.get(id);
+        String passcode="1111";
         if (pass == null) {
             return 0;
         } else if (pass.equals(passcode)) {

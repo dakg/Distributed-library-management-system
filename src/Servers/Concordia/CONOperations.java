@@ -12,7 +12,7 @@ public interface CONOperations extends Remote {
 
     //Manager Role: addItem,removeItem,listItemAvailability
 
-    int authuser(String id, String passcode) throws RemoteException;
+    int authuser(String id) throws RemoteException;
 
     int addItem(String managerID, String itemID, String itemName, int quantity) throws RemoteException;
 //                                                                                addItem (managerID, itemID, itemName, quantity):

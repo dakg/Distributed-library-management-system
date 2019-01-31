@@ -54,21 +54,21 @@ public class User {
 
     public static void main(String arg[]) throws IOException {
         try {
-//            System.out.print("ID No :");
-//            BufferedReader buf = new BufferedReader(new InputStreamReader(System.in));
-//            String id = buf.readLine();
+            System.out.print("ID No :");
+            BufferedReader buf = new BufferedReader(new InputStreamReader(System.in));
+            String id = buf.readLine();
 //            System.out.print("Password :");
 //            String pass = buf.readLine();
-//            String Token = tokenGenerator(id);
-//            //   System.out.println(tokenGenerator(id));
-//
-//            if (Token.equals("CU") || Token.equals("CM")) {
-//                concordia(id, pass);
-//            } else if ((Token.equals("GU") || Token.equals("GM"))) {
-//                mcgill(id, pass);
-//            } else if ((Token.equals("MU") || Token.equals("MM"))) {
-//                montreal(id, pass);
-//            }
+            String Token = tokenGenerator(id);
+            //   System.out.println(tokenGenerator(id));
+
+            if (Token.equals("CU") || Token.equals("CM")) {
+                concordia(id);
+            } else if ((Token.equals("GU") || Token.equals("GM"))) {
+                mcgill(id);
+            } else if ((Token.equals("MU") || Token.equals("MM"))) {
+                montreal(id);
+            }
             testThread();
         } catch (Exception e) {
             System.err.println("Client exception: " + e.toString());
@@ -76,11 +76,11 @@ public class User {
         }
     }
 
-    static void concordia(String id, String pass) {
+    static void concordia(String id) {
         try {
             Registry registry = LocateRegistry.getRegistry(1111);
             CONOperations stub = (CONOperations) registry.lookup("//localhost:1111/CONImp");
-            int authCode = stub.authuser(id, pass);
+            int authCode = stub.authuser(id);
             Scanner sc = new Scanner(System.in);
             switch (authCode) {
                 case 1: //for manager
@@ -153,12 +153,12 @@ public class User {
         }
     }
 
-    static void mcgill(String id, String pass) {
+    static void mcgill(String id) {
         try {
             Registry registry = LocateRegistry.getRegistry(2222);
 
             MCGOperations stub = (MCGOperations) registry.lookup("//localhost:2222/MCGImp");
-            int a = stub.authuser(id, pass);
+            int a = stub.authuser(id);
             System.out.println(a);
         } catch (Exception e) {
             System.err.println("Client exception: " + e.toString());
@@ -166,11 +166,11 @@ public class User {
         }
     }
 
-    static void montreal(String id, String pass) {
+    static void montreal(String id) {
         try {
             Registry registry = LocateRegistry.getRegistry(3333);
             MONOperations stub = (MONOperations) registry.lookup("//localhost:3333/MONImp");
-            int a = stub.authuser(id, pass);
+            int a = stub.authuser(id);
             System.out.println(a);
         } catch (Exception e) {
             System.err.println("Client exception: " + e.toString());
