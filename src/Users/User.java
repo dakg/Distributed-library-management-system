@@ -225,10 +225,8 @@ class ThreadClass2 implements Runnable {
         try {
             Registry registry = LocateRegistry.getRegistry(1111);
             CONOperations stub = (CONOperations) registry.lookup("//localhost:1111/CONImp");
-
             List l = stub.listItemAvailability("CONM1111");
             System.out.println(Arrays.toString(l.toArray()));
-
         } catch (Exception e) {
             System.out.println(e.toString());
         }
