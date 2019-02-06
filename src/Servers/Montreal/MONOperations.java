@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface MONOperations extends Remote {
 
-    //Manager Role: addItem,removeItem,listItemAvailability
+     //Manager Role: addItem,removeItem,listItemAvailability
 
     int authuser(String id) throws RemoteException;
 
@@ -45,7 +45,7 @@ public interface MONOperations extends Remote {
 //                                                                                Programming 4, CON6491 Systems Software 0
 
     //Library User Role: borrowItem,findItem,returnItem 
-    boolean borrowItem(String userID, String itemID, String numberOfDays) throws RemoteException;
+    int borrowItem(String userID, String itemID, int numberOfDays,int waitWIsh) throws RemoteException;
 //                                                                                borrowItem (userID, itemID, numberOfDays) :
 //                                                                                When a user invokes this method from his/her library through the server associated
 //                                                                                with this user (determined by the unique userId prefix), it attempts to borrow the
@@ -59,7 +59,7 @@ public interface MONOperations extends Remote {
 //                                                                                whenever the item is available again, automatically lend the item to the first user in
 //                                                                                that queue.
 
-    boolean findItem(String userID, String itemName) throws RemoteException;
+    String findItem(String userID, String itemName) throws RemoteException;
 //                                                                                findItem (userID, itemName):
 //                                                                                When a user invokes this method from his/her library through the server associated
 //                                                                                with this user, that library server gets all the itemIDs with the specified itemName
@@ -68,7 +68,7 @@ public interface MONOperations extends Remote {
 //                                                                                UDP/IP sockets and the result will be returned to the user. Eg: MON6231 5,
 //                                                                                CON6441 4, CON6497 1, MCG6132 5.
 
-    boolean returnItem(String userID, String itemID) throws RemoteException;
+    int returnItem(String userID, String itemID) throws RemoteException;
 //                                                                                returnItem (userID, itemID):
 //                                                                                When a user invokes this method from his/her library through the server associated
 //                                                                                with this user (determined by the unique userID prefix) searches the hash map to

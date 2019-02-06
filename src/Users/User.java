@@ -54,14 +54,15 @@ public class User {
 
     public static void main(String arg[]) throws IOException {
         try {
-            System.out.print("ID No :");
-            BufferedReader buf = new BufferedReader(new InputStreamReader(System.in));
-            String id = buf.readLine();
+//            System.out.print("ID No :");
+//            BufferedReader buf = new BufferedReader(new InputStreamReader(System.in));
+//            String id = buf.readLine();
+             String id= "CONU1111";
 //            System.out.print("Password :");
 //            String pass = buf.readLine();
             String Token = tokenGenerator(id);
             //   System.out.println(tokenGenerator(id));
-
+           
             if (Token.equals("CU") || Token.equals("CM")) {
                 concordia(id);
             } else if ((Token.equals("GU") || Token.equals("GM"))) {
@@ -69,7 +70,7 @@ public class User {
             } else if ((Token.equals("MU") || Token.equals("MM"))) {
                 montreal(id);
             }
-            testThread();
+         //   testThread();
         } catch (Exception e) {
             System.err.println("Client exception: " + e.toString());
             e.printStackTrace();
@@ -78,8 +79,8 @@ public class User {
 
     static void concordia(String id) {
         try {
-            Registry registry = LocateRegistry.getRegistry(1111);
-            CONOperations stub = (CONOperations) registry.lookup("//localhost:1111/CONImp");
+            Registry registry = LocateRegistry.getRegistry(1099);
+            CONOperations stub = (CONOperations) registry.lookup("//localhost:1099/CONImp");
             int authCode = stub.authuser(id);
             Scanner sc = new Scanner(System.in);
             switch (authCode) {
@@ -136,6 +137,7 @@ public class User {
                             }
                             case 4: {
                                 loop = false;
+                                break;
                             }
                         }
                     }
@@ -144,6 +146,28 @@ public class User {
 
                 case 2: //for user
                 {
+                    stub.findItem("CONU1111", "ds1");
+//                    System.out.println("1). Borrow Item");
+//                    if(sc.nextInt()==1){
+//                        int waitWish = 0;
+//                        int temp = stub.borrowItem(id, "CON0001", 5 ,0 );
+//                        if(temp == 1)
+//                            System.out.println("Successfully borrowed...");
+//                        else if(temp ==2)
+//                        {
+//                            System.out.println("Book not Available. Do you want to be added in waitlist.1(yes) or 2(no)");
+//                            int t=sc.nextInt();
+//                            if(t==1)
+//                            {
+//                                waitWish = 1;
+//                                int c = stub.borrowItem(id, "CON0001",5, waitWish);
+//                                if(c == 3)
+//                                    System.out.println("Added in waitList");
+//                            }
+//                        }
+//                            
+//                    }
+                    
                 }
 
             }

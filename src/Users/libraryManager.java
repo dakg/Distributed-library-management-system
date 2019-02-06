@@ -17,7 +17,8 @@ import java.util.Scanner;
  * @author daksh
  */
 public class libraryManager {
-
+    static final int rmiRegistry=1099;
+    
     static String tokenGenerator(String ID) {
 
         String id = ID.toUpperCase();
@@ -69,8 +70,9 @@ public class libraryManager {
     }
     static void concordia(String id) {
         try {
-            Registry registry = LocateRegistry.getRegistry(1111);
-            CONOperations stub = (CONOperations) registry.lookup("//localhost:1111/CONImp");
+            
+            Registry registry = LocateRegistry.getRegistry(rmiRegistry);
+            CONOperations stub = (CONOperations) registry.lookup("//localhost:" + rmiRegistry +"/CONImp");
             int authCode = stub.authuser(id);
             Scanner sc = new Scanner(System.in);
             switch (authCode) {
@@ -165,8 +167,8 @@ public class libraryManager {
 
     static void mcgill(String id) {
         try {
-            Registry registry = LocateRegistry.getRegistry(2222);
-            MCGOperations stub = (MCGOperations) registry.lookup("//localhost:2222/MCGImp");
+            Registry registry = LocateRegistry.getRegistry(rmiRegistry);
+            MCGOperations stub = (MCGOperations) registry.lookup("//localhost:" + rmiRegistry+ "/MCGImp");
             int authCode = stub.authuser(id);
             Scanner sc = new Scanner(System.in);
             switch (authCode) {
@@ -251,8 +253,8 @@ public class libraryManager {
 
     static void montreal(String id) {
         try {
-            Registry registry = LocateRegistry.getRegistry(3333);
-            MONOperations stub = (MONOperations) registry.lookup("//localhost:3333/MONImp");
+            Registry registry = LocateRegistry.getRegistry(rmiRegistry);
+            MONOperations stub = (MONOperations) registry.lookup("//localhost:" + rmiRegistry +"/MONImp");
             int authCode = stub.authuser(id);
             Scanner sc = new Scanner(System.in);
             switch (authCode) {
