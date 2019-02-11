@@ -30,6 +30,8 @@ public class McGill {
     static int MONPORT = 8000;
 
     public static void main(String arg[]) {
+        
+        
         if (System.getSecurityManager() == null) {
             //   System.setProperty("java.rmi.server.codebase","file:\\C:\\Users\\daksh\\Documents\\NetBeansProjects\\DS Assignment1\\src\\Servers\\Concordia\\java.policy" );
             System.setProperty("java.security.policy", "file:\\C:\\Users\\daksh\\Documents\\NetBeansProjects\\DS Assignment1\\src\\Servers\\McGill\\java.policy");
@@ -44,7 +46,7 @@ public class McGill {
             Registry registry = LocateRegistry.getRegistry(port);
             registry.rebind("//localhost:" + port + "/MCGImp", stub);
             System.err.println("Server ready at : " + port);
-            receive();
+            receive(obj);
 //            Runnable r = () -> receive();
 //            new Thread(r).start();
             //      sendMessage("from 7000 with love", 6000);
@@ -55,7 +57,7 @@ public class McGill {
         }
     }
 
-   private static void receive() {
+   private static void receive(MCGOperationsImplementation obj) {
         DatagramSocket aSocket = null;
         try {
             int receivePort = MYPORT;
@@ -70,7 +72,7 @@ public class McGill {
                 Runnable r = () -> {
                     try {
                         System.out.println("Received Packet : " + s);
-                        processData(s);
+                        processData(s,obj);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(McGill.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (IOException ex) {
@@ -102,7 +104,7 @@ public class McGill {
         }
     }
 
-    static void processData(String receivedData) throws InterruptedException, SocketException, IOException {
+    static void processData(String receivedData,MCGOperationsImplementation obj1) throws InterruptedException, SocketException, IOException {
 
         String refinedReceivedData = receivedData.trim();
         String s[] = refinedReceivedData.split(",");
@@ -113,7 +115,6 @@ public class McGill {
         
         if (type == Communication.REQUEST) {
             String pData = "";
-            MCGOperationsImplementation obj1 = new MCGOperationsImplementation();
             int requestType = Integer.parseInt(s[4]);
             switch (requestType) {
                 case 10: {

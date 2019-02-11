@@ -1,5 +1,6 @@
 package Servers.Concordia;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -31,7 +32,7 @@ public class Concordia {
     static int MONPORT = 8000;
 
     public static void main(String arg[]) throws SocketException, IOException {
-        fh = new FileHandler("d:/logs/concordia.logs");
+
         if (System.getSecurityManager() == null) {
             //   System.setProperty("java.rmi.server.codebase","file:\\C:\\Users\\daksh\\Documents\\NetBeansProjects\\DS Assignment1\\src\\Servers\\Concordia\\java.policy" );
             System.setProperty("java.security.policy", "file:\\C:\\Users\\daksh\\Documents\\NetBeansProjects\\DS Assignment1\\src\\Servers\\Concordia\\java.policy");
@@ -40,8 +41,8 @@ public class Concordia {
         }
         try {
             PopulateData.populate();
-            CONOperationsImplementation obj = new CONOperationsImplementation(LOGGER, fh);
-            obj.dummy();
+            CONOperationsImplementation obj = new CONOperationsImplementation();
+
             //   obj.borrowItem("CONU1111", "CON0001", 1, 0);
             int port = 1099;
             CONOperations stub = (CONOperations) UnicastRemoteObject.exportObject(obj, 0);
@@ -49,20 +50,21 @@ public class Concordia {
             Registry registry = LocateRegistry.getRegistry(port);
             registry.rebind("//localhost:" + port + "/CONImp", stub);
             System.err.println("Server ready at : " + port);
-            receive();
+            receive(obj);
         } catch (Exception e) {
             sendMessage("hello", 7000);
             System.err.println("Server exception: " + e.toString());
             e.printStackTrace();
         }
+
     }
 
-    private static void receive() {
+    private static void receive(CONOperationsImplementation obj) {
         DatagramSocket aSocket = null;
         try {
             int receivePort = MYPORT;
             aSocket = new DatagramSocket(receivePort);
-            byte buffer[] ;
+            byte buffer[];
             System.out.println("Server ready to receive at : " + receivePort);
             while (true) {
                 buffer = new byte[2048];
@@ -72,7 +74,7 @@ public class Concordia {
                 Runnable r = () -> {
                     try {
                         System.out.println("Received Packet : " + s);
-                        processData(s);
+                        processData(s, obj);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(Concordia.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (IOException ex) {
@@ -104,18 +106,16 @@ public class Concordia {
         }
     }
 
-    static void processData(String receivedData) throws InterruptedException, SocketException, IOException {
-
+    static void processData(String receivedData, CONOperationsImplementation obj1) throws InterruptedException, SocketException, IOException {
         String refinedReceivedData = receivedData.trim();
         String s[] = refinedReceivedData.split(",");
         String ipAddress = s[0];
         int port = Integer.parseInt(s[1]);
         String messageID = s[2];
         int type = Integer.parseInt(s[3]);
-        
+
         if (type == Communication.REQUEST) {
             String pData = "";
-            CONOperationsImplementation obj1 = new CONOperationsImplementation();
             int requestType = Integer.parseInt(s[4]);
             switch (requestType) {
                 case 10: {
@@ -126,6 +126,7 @@ public class Concordia {
                     break;
                 }
                 case 11: {
+
                     String userID = s[5];
                     String itemID = s[6];
                     String result = obj1.checkAvailAndValidate(userID, itemID);
@@ -137,7 +138,7 @@ public class Concordia {
                     String itemID = s[6];
                     int noOfDays = Integer.parseInt(s[7]);
                     String result = obj1.checkAvailAndValidateAndDoBorrow(userID, itemID, noOfDays);
-                    
+
                     pData = pData + result;
                     break;
                 }
@@ -158,13 +159,11 @@ public class Concordia {
                     break;
                 }
             }
-            
+
             String responseMsg = "";
-            responseMsg = responseMsg + messageID + ","+ Communication.RESPONSE +"," + pData;
-            sendMessage(responseMsg,port);
-        } 
-        
-        else if (type == Communication.RESPONSE) {
+            responseMsg = responseMsg + messageID + "," + Communication.RESPONSE + "," + pData;
+            sendMessage(responseMsg, port);
+        } else if (type == Communication.RESPONSE) {
             String r = s[4];
             Communication.responseMessages.put(messageID, r);
         }

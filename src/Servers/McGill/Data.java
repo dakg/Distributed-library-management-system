@@ -42,6 +42,8 @@ class Data {
     static ConcurrentHashMap<String, List<BorrowDetails>> borrowDetails = new ConcurrentHashMap();
     static ConcurrentHashMap<String, List<String>> borrowDetailsWithoutDays = new ConcurrentHashMap();
     static ConcurrentHashMap<String, Queue<String>> waitList = new ConcurrentHashMap();
+    static ConcurrentHashMap<String, String> managerIDs = new ConcurrentHashMap();
+    static ConcurrentHashMap<String, String> userIDs = new ConcurrentHashMap();
 
 }
 
@@ -54,6 +56,8 @@ class PopulateData {
         populate_borrowDetailsWithoutDays();
         populate_bookInformation();
         populate_waitList();
+        populate_managerIDs();
+        populate_userIDs();
 
     }
 
@@ -69,6 +73,22 @@ class PopulateData {
         Data.up.put("MCGU5555", "1111");
         Data.up.put("MCGM5555", "1111");
 
+    }
+
+    static void populate_managerIDs() {
+        Data.managerIDs.put("MCGM1111", "1111");
+        Data.managerIDs.put("MCGM2222", "1111");
+        Data.managerIDs.put("MCGM3333", "1111");
+        Data.managerIDs.put("MCGM4444", "1111");
+        Data.managerIDs.put("MCGM5555", "1111");
+    }
+
+    static void populate_userIDs() {
+        Data.userIDs.put("MCGU1111", "1111");
+        Data.userIDs.put("MCGU2222", "1111");
+        Data.userIDs.put("MCGU3333", "1111");
+        Data.userIDs.put("MCGU4444", "1111");
+        Data.userIDs.put("MCGU5555", "1111");
     }
 
     static void populate_availableBookInformation() {
@@ -107,18 +127,17 @@ class PopulateData {
         Data.borrowDetailsWithoutDays.put("MCGU1111", l1);
         Data.borrowDetailsWithoutDays.put("MCGU2222", l2);
     }
-    
-    static void populate_waitList()
-    {
+
+    static void populate_waitList() {
         Queue q = new LinkedList();
         q.add("MCGU4444");
         q.add("MCGU3333");
-        Data.waitList.put("MCG1000",q);
-        
+        Data.waitList.put("MCG1000", q);
+
         Queue q2 = new LinkedList();
         q2.add("MCGU3333");
         q2.add("MCGU4444");
-        Data.waitList.put("MCG1001",q2);
-                
+        Data.waitList.put("MCG1001", q2);
+
     }
 }

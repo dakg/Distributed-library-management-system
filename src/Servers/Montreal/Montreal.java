@@ -42,14 +42,14 @@ public class Montreal {
             Registry registry = LocateRegistry.getRegistry(port);
             registry.rebind("//localhost:" + port + "/MONImp", stub);
             System.err.println("Server ready at : " + port);
-            receive();
+            receive(obj);
         } catch (Exception e) {
             System.err.println("Server exception: " + e.toString());
             e.printStackTrace();
         }
     }
 
-    private static void receive() {
+    private static void receive(MONOperationsImplementation obj) {
         DatagramSocket aSocket = null;
         try {
             int receivePort = MYPORT;
@@ -64,7 +64,7 @@ public class Montreal {
                 Runnable r = () -> {
                     try {
                         System.out.println("Received Packet : " + s);
-                        processData(s);
+                        processData(s,obj);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(Montreal.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (IOException ex) {
@@ -96,7 +96,7 @@ public class Montreal {
         }
     }
 
-    static void processData(String receivedData) throws InterruptedException, SocketException, IOException {
+    static void processData(String receivedData,MONOperationsImplementation obj1) throws InterruptedException, SocketException, IOException {
 
         String refinedReceivedData = receivedData.trim();
         String s[] = refinedReceivedData.split(",");
@@ -108,7 +108,6 @@ public class Montreal {
 
         if (type == Communication.REQUEST) {
             String pData = "";
-            MONOperationsImplementation obj1 = new MONOperationsImplementation();
             int requestType = Integer.parseInt(s[4]);
             switch (requestType) {
                 case 10: {
